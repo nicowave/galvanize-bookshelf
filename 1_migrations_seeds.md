@@ -16,6 +16,7 @@ Next, ensure there's a PostgreSQL server running on your machine and create both
 ```shell
 createdb bookshelf_dev
 createdb bookshelf_test
+(done)
 ```
 
 Next, open the project in your text editor.
@@ -29,6 +30,7 @@ And, update the `knexfile.js` file with the following connection information for
 ```javascript
 'postgres://localhost/bookshelf_dev'
 'postgres://localhost/bookshelf_test'
+(done)
 ```
 
 Then, generate a cryptographic key that'll be used for the JWT signature. You'll learn what a JWT is and why it's signed in an upcoming lesson.
@@ -47,7 +49,7 @@ The tests will not pass, but if you cannot connect to the test database, you'll 
 
 ```text
 Knex:warning - Pool2 - Error: Pool was destroyed
-Knex:Error Pool2 - error: database "bookshelf_tes" does not exist
+Knex:Error Pool2 - error: database "bookshelf_test" does not exist
 ```
 
 ## Migrations
@@ -87,7 +89,7 @@ npm test test/part1.seeds.test.js
 
 **TIP:** Postgres keeps track of the sequences for any of the incrementing serial id columns in its tables.  Doing a describe on a table will show the name of the sequence it is using in the modifiers column.  When data is inserted with the id hardcoded, which is often desirable with test data, the sequence will not be aware of this.  So, it's important to advance the sequence to the last id.  An example alter statement to do this would be:
 
-```sql
+```sql  
 SELECT setval('books_id_seq', (SELECT MAX(id) FROM books));
 ```
 

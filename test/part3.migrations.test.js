@@ -2,7 +2,7 @@
 
 'use strict';
 
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'development';
 
 const assert = require('chai').assert;
 const { suite, test } = require('mocha');
@@ -43,7 +43,7 @@ suite('part3 migrations', () => {
             nullable: false,
             defaultValue: '\'\'::character varying'
           },
-
+          //
           email: {
             type: 'character varying',
             maxLength: 255,
