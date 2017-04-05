@@ -11,8 +11,9 @@ const router = express.Router()
 
 
 
+// http POST  user with hashed_password
 router.post('/users', function(req, res, next) {
-  bcrypt.hash(req.body.password, 12)
+  let hashed_password = bcrypt.hash(req.body.password, 12)
     .then(function(hashed_password) {
       return knex('users').insert({
           'first_name': req.body.firstName ,

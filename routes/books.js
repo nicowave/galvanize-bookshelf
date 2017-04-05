@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-const express = require('express');
-const knex = require('../knex');
-const humps = require('humps');
+const express = require('express')
+const knex = require('../knex')
+const humps = require('humps')
 
 // eslint-disable-next-line new-cap
-const router = express.Router();
+const router = express.Router()
 
 
 // make a 'get' request to ''\books' 'route'
@@ -18,12 +18,12 @@ router.get('/books', function(req, res, next) {
       res.send(humps.camelizeKeys(books));
     })
     .catch(function(err) {
-        next(err);
+        next(err)
     })
 })
 
 
-router.get('/books/:id', (req, res, next) => {
+router.get('/books/:id', function(req, res, next) {
   knex('books')
     .orderBy('id', req.params.id)
     .then(function(books) {
@@ -33,7 +33,7 @@ router.get('/books/:id', (req, res, next) => {
       res.send(humps.camelizeKeys(books[0]));
     })
     .catch(function(err) {
-      next(err);
+      next(err)
     })
 })
 
@@ -42,9 +42,9 @@ router.post('/books', function(req, res, next) {
   knex('books')
     .then(function(books) {
       if (!books) {
-       const err = new Error('book does not exist');
-       err.status = 404;
-       throw err;
+       const err = new Error('book does not exist')
+       err.status = 404
+       throw err
       }
     knex('books')
       .insert({'id': req.body.id,
@@ -58,7 +58,7 @@ router.post('/books', function(req, res, next) {
             })
             .returning('*')
             .then(function(newbooks) {
-              res.json(humps.camelizeKeys(newbooks[0]));
+              res.json(humps.camelizeKeys(newbooks[0]))
       })
     })
     .catch(function(err)  {
@@ -81,12 +81,12 @@ router.patch('/books/:id', function(req, res, next) {
     })
     .returning('*')
     .then(function(updatedBook) {
-      res.json(humps.camelizeKeys(updatedBook[0]));
+      res.json(humps.camelizeKeys(updatedBook[0]))
     })
     .catch(function(err) {
       next(err)
     })
-});
+})
 
 
 router.delete('/books/:id', function(req, res, next)  {
@@ -98,10 +98,10 @@ router.delete('/books/:id', function(req, res, next)  {
     .first()
     .then((row) => {
       if (!row) {
-        return next();
+        return next()
       }
       // set book object 'bookNine' variable to the 'row'
-      bookNine = row;
+      bookNine = row
 
       return knex('books')
         .del()
@@ -112,9 +112,9 @@ router.delete('/books/:id', function(req, res, next)  {
       res.send(humps.camelizeKeys(bookNine));
     })
     .catch(function(err) {
-      next(err);
-    });
+      next(err)
+    })
     // end 'knex' query
-});
+})
 
 module.exports = router;
