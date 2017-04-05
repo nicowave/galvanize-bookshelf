@@ -12,7 +12,11 @@ app.disable('x-powered-by')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
+const path = require('path')
+
 const router = express.Router()
+
+
 
 switch (app.get('env')) {
   case 'development':
@@ -31,7 +35,6 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(router)
 
-const path = require('path')
 
 app.use(express.static(path.join('public')))
 
@@ -48,10 +51,8 @@ const favorites = require('./routes/favorites')
 const token = require('./routes/token')
 const users = require('./routes/users')
 
-
-
 app.use(books)
-app.use(favorites)
+app.use('/favorites', favorites)
 app.use(token)
 app.use(users)
 

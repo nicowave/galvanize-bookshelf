@@ -21,15 +21,15 @@ router.get('/token', function(req, res, next)  {
     res.status(200);
     res.send(false);
   }
-});
+})
 
 
 router.post('/token', function(req, res, next) {
-
+  // query the databse to check-out 'users' 'email' field
   knex('users')
     .where('email', req.body.email)
     .then(function(users) {
-      
+
       if (users.length === 0) {
         res.status(400)
         res.set('Content-Type', 'plain/text')
@@ -52,18 +52,16 @@ router.post('/token', function(req, res, next) {
           res.set('Content-Type', 'plain/text')
           res.send('Bad email or password')
         }
-
       }
-
     })
 })
 
 
 router.delete('/token', function(req, res, next) {
 
-  res.clearCookie('token');
-  res.status(200);
-  res.send(true);
+  res.clearCookie('token')
+  res.status(200)
+  res.send(true)
 })
 
 
