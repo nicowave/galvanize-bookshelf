@@ -4,17 +4,17 @@
   "description": "Create a web application to manage your book collection",
   "main": "server.js",
   "scripts": {
-    "heroku-postbuild": "knex migrate:rollback; knex migrate:latest; knex seed:run;",
+    "start": "node ./bin/www",
     "knex": "knex",
+    "heroku-postbuild": "knex migrate:rollback; knex migrate:latest; knex seed:run;",
+      "nodemon": "node server.js",
     "lint": "eslint  --ignore-pattern public/js/vendor",
     "nf": "nf start",
-    "start": "node ./bin/www",
-    "test": "mocha",
-    "nodemon": "node server.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gschool/galvanize-bookshelf.git"
+    "url": "git+https://github.com/nicowave/galvanize-bookshelf.git"
   },
   "author": "Ian Smith <ian.smith@galvanize.com>",
   "contributors": [
