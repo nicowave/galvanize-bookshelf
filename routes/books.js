@@ -25,7 +25,7 @@ router.get('/books', function(req, res, next) {
 
 router.get('/books/:id', function(req, res, next) {
   knex('books')
-    .orderBy('id', req.params.id)
+    .where('id', req.params.id)
     .then(function(books) {
       if (!books) {
         return next()

@@ -47,6 +47,7 @@ router.get('/check?', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   if (req.cookies.token) {
+    // verify jwt token to retrieve paload and user_id
     console.log('Token found! Continue...\n\n')
     let payload = jwt.verify(req.cookies.token, process.env.JWT_KEY)
     console.log(payload.id)
