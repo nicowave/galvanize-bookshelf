@@ -27,7 +27,7 @@ router.get('/', function(req, res, next) {
 
 
 // GET request for a specific 'book' data-object
-router.get('/check?', function(req, res, next) {
+router.get('/check', function(req, res, next) {
     if (req.cookies.token) {
       let qiD = req.query.bookId
       knex('favorites')
@@ -39,6 +39,7 @@ router.get('/check?', function(req, res, next) {
             res.status(200).send(false)
           }
         })
+        //  do a join to books table from favorites
     } else {
       return next(boom.create(401, 'Unauthorized'))
     }
@@ -46,25 +47,32 @@ router.get('/check?', function(req, res, next) {
 
 
 router.post('/', function(req, res, next) {
+
+  console.log(req.body.bookId);
+  let bookId = req.body.bookId
+
   if (req.cookies.token) {
     // verify jwt token to retrieve paload and user_id
-    console.log('Token found! Continue...\n\n')
+    console.log(`Token found! Continue...\n ${req.cookies.token}`)
     let payload = jwt.verify(req.cookies.token, process.env.JWT_KEY)
-    console.log(payload.id)
-    knex.raw("SELECT setval('favorites_id_seq', (SELECT MAX(id) FROM favorites));")
-      .then(
-        knex('favorites')
-        .returning('*')
-        .insert({
-          'book_id': req.body.bookId,
-          'user_id': payload.id
-        })
-        .then(function(newFavorite) {
-          console.log(newFavorite[0])
-          res.set('Content-Type', 'application/json')
-          res.status(200)
-          res.send(humps.camelizeKeys(newFavorite[0]))
-      }))
+    console.log('payload', payload)
+    console.log('id', payload.id)
+
+    knex('favorites')
+      .join('books', 'books.id', 'book_id')
+      .returning(['id', 'book_id', 'user_id'])
+         .insert({
+           id: req.body.id,
+           book_id: bookId,
+           user_id: payload.id
+         })
+         .then(function(favorite){
+
+           console.log(favorite[0])
+           res.status(200)
+           res.send(humps.camelizeKeys(favorite[0]))
+         })
+
   } else {
     return next(boom.create(401, 'Unauthorized'))
   }
